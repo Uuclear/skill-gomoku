@@ -164,7 +164,9 @@ namespace Gomoku.Battle
         void BuildToast()
         {
             _toast = UIFactory.Label(transform, "", 34, TextAnchor.MiddleCenter);
-            UIFactory.Place((RectTransform)_toast.transform, 0, 420, 960, 80);
+            // y=320: clear of the emote bar (430..510) and the skill
+            // banner (525..595) that now sit above the old y=420 slot.
+            UIFactory.Place((RectTransform)_toast.transform, 0, 320, 960, 80);
             _toast.color = new Color(1f, 0.85f, 0.35f, 1f);
             _toast.raycastTarget = false;
             _toast.gameObject.SetActive(false);
@@ -305,11 +307,37 @@ namespace Gomoku.Battle
             if (prevEnergy >= 0 && MySide(_snap).Energy != prevEnergy)
                 _fx.FloatingEnergy(MySide(_snap).Energy - prevEnergy);
 
-            // Pulse on concrete board-affecting public events.
+            // Skill casts: a banner for every skill (both sides), then a
+            // category-colored board ring when it has a point, or a ring on
+            // the relevant player card when it does not.
             bool own = ev.Actor == _myColor;
-            if (ev.Kind == "skill" && ev.SkillId.HasValue && ev.X.HasValue && ev.Y.HasValue &&
-                BoardAffecting(ev.SkillId.Value))
-                _fx.Pulse(ev.X.Value, ev.Y.Value, own);
+            if (ev.Kind == "skill" && ev.SkillId.HasValue)
+            {
+                var spec = SkillCatalog.ById(ev.SkillId.Value);
+                if (spec != null)
+                {
+                    _fx.SkillBanner(spec.Name, own, spec.Category);
+                    var catColor = EffectPlayer.ColorForCategory(spec.Category);
+                    if (ev.X.HasValue && ev.Y.HasValue && BoardAffecting(spec.Id))
+                    {
+                        if (spec.Id == 4)
+                        {
+                            _fx.Burst(ev.X.Value, ev.Y.Value);
+                            _fx.ShakeBoard();
+                        }
+                        else
+                        {
+                            _fx.PulseAt(ev.X.Value, ev.Y.Value, catColor);
+                        }
+                    }
+                    else
+                    {
+                        // Debuffs ring the victim's card; everything else
+                        // rings the caster's.
+                        _fx.CardPulse(spec.Category == SkillCat.Debuff ? !own : own, catColor);
+                    }
+                }
+            }
             if ((ev.Kind == "bomb" || ev.Kind == "undo" || ev.Kind == "mine_trigger")
                 && ev.X.HasValue && ev.Y.HasValue)
                 _fx.Pulse(ev.X.Value, ev.Y.Value, own);

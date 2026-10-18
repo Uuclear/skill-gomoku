@@ -84,17 +84,18 @@ namespace Gomoku.Battle
 
             slot.Cost = UIFactory.Label(go.transform, "", 26, TextAnchor.UpperLeft);
             var costRt = (RectTransform)slot.Cost.transform;
-            costRt.anchorMin = Vector2.zero;
-            costRt.anchorMax = Vector2.one;
-            costRt.offsetMin = new Vector2(10, 2);
-            costRt.offsetMax = new Vector2(-10, -2);
+            costRt.anchorMin = new Vector2(0f, 1f);
+            costRt.anchorMax = new Vector2(0f, 1f);
+            costRt.pivot = new Vector2(0f, 1f);
+            costRt.anchoredPosition = new Vector2(10, -4);
+            costRt.sizeDelta = new Vector2(64, 34);
             slot.Cost.color = new Color(1f, 0.86f, 0.35f, 1f);
 
             slot.Name = UIFactory.Label(go.transform, spec != null ? spec.Name : "—",
                 27, TextAnchor.MiddleCenter);
             var nameRt = (RectTransform)slot.Name.transform;
-            nameRt.anchorMin = new Vector2(0f, 0.15f);
-            nameRt.anchorMax = new Vector2(1f, 0.75f);
+            nameRt.anchorMin = new Vector2(0f, 0f);
+            nameRt.anchorMax = new Vector2(1f, 0.62f);
             nameRt.offsetMin = new Vector2(6, 0);
             nameRt.offsetMax = new Vector2(-6, 0);
 

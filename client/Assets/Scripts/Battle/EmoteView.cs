@@ -55,7 +55,9 @@ namespace Gomoku.Battle
             var go = mine ? _mineBubble : _oppBubble;
             var text = mine ? _mineText : _oppText;
             text.text = label;
-            UIFactory.Place((RectTransform)go.transform, 0, mine ? -700 : 620, 300, 76);
+            // Own bubble sits above the TargetSelector bar (-724..-668) and
+            // the skill bar (-960..-860).
+            UIFactory.Place((RectTransform)go.transform, 0, mine ? -790 : 620, 300, 76);
             go.SetActive(true);
             if (mine) _mineUntil = Time.time + HoldSeconds;
             else _oppUntil = Time.time + HoldSeconds;

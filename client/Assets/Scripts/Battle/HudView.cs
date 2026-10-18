@@ -32,8 +32,8 @@ namespace Gomoku.Battle
             _oppCard = BuildCard(parent, "OppCard", 805, out _oppName, out _oppEnergy);
             _selfCard = BuildCard(parent, "SelfCard", -805, out _selfName, out _selfEnergy);
 
-            _oppName.text = $"{ColorName(1 - myColor)} · {oppName}";
-            _selfName.text = $"{ColorName(myColor)} · {myName}";
+            _oppName.text = Truncate($"{ColorName(1 - myColor)} · {oppName}");
+            _selfName.text = Truncate($"{ColorName(myColor)} · {myName}");
 
             BuildTimer(parent);
         }
@@ -55,7 +55,7 @@ namespace Gomoku.Battle
 
             energy = UIFactory.Label(go.transform, "", 40, TextAnchor.MiddleRight);
             var energyRt = (RectTransform)energy.transform;
-            energyRt.anchorMin = new Vector2(0.62f, 0f);
+            energyRt.anchorMin = new Vector2(0.68f, 0f);
             energyRt.anchorMax = new Vector2(1f, 1f);
             energyRt.offsetMin = new Vector2(0, 0);
             energyRt.offsetMax = new Vector2(-30, 0);
@@ -109,6 +109,14 @@ namespace Gomoku.Battle
                 ? new Color(0.3f, 0.78f, 0.45f, 1f)
                 : new Color(0.9f, 0.28f, 0.22f, 1f);
             _timerText.text = $"{Mathf.Max(0, remainSeconds)}s";
+        }
+
+        // Built-in Text has no ellipsis overflow; long nicknames would run
+        // into the energy label, so clamp them manually.
+        static string Truncate(string s)
+        {
+            const int max = 12;
+            return s.Length <= max ? s : s.Substring(0, max - 1) + "…";
         }
 
         static string ColorName(int color) => color == 0 ? "黑方" : "白方";
