@@ -1,0 +1,4 @@
+<linker>
+  <!-- Newtonsoft.Json reflection over the wire DTOs: keep the whole game assembly. -->
+  <assembly fullname="Assembly-CSharp" preserve="all" />
+</linker>

@@ -1,0 +1,41 @@
+# ===== Unity (client/) =====
+client/Library/
+client/Temp/
+client/Obj/
+client/obj/
+client/Logs/
+client/UserSettings/
+client/.utmp/
+client/MemoryCaptures/
+client/Builds/
+client/.vs/
+client/.idea/
+client/*.csproj
+client/*.sln
+client/*.user
+client/*.userprefs
+client/*.pidb
+client/*.booproj
+client/*.svd
+client/*.pdb
+client/*.mdb
+client/crashlytics-build.properties
+
+# Test artifacts (screenshots & build logs)
+client/*.png
+client/*.log
+
+# ===== Go (server/) =====
+server/server.exe
+server/server
+server/*.test
+server/*.out
+
+# ===== Root build output =====
+Builds/
+
+# ===== OS / editor =====
+Thumbs.db
+Desktop.ini
+.DS_Store
+*~
